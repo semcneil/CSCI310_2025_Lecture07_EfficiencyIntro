@@ -61,7 +61,7 @@ if __name__ == '__main__':
     """Runs if file called as script as opposed to being imported as a library
     """
     nTest = 5
-    nVals = [10000, 100000, 1000000]
+    nVals = [10000, 100000, 1000000, 5000000, 10000000]
     v2Results = {'n':[], 'tavg':[]}
     v3Results = {'n':[], 'tavg':[]}
     for n in nVals:

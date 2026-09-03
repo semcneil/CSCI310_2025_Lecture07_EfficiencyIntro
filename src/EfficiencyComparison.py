@@ -10,6 +10,7 @@ https://runestone.academy/ns/books/published/pythonds/AlgorithmAnalysis/WhatIsAl
 
 import time  # for timing how long each algorithm takes
 import matplotlib.pyplot as plt  # to plot results (uv pip install matplotlib)
+import psutil
 
 def sumOfN2(n):
     """
@@ -26,14 +27,17 @@ def sumOfN2(n):
         A two part tuple, the first part is the sum, the second is execution time
     """
     start = time.time()
+    start_cpu = time.process_time()
 
     theSum = 0
     for i in range(1,n+1):
         theSum = theSum + i
 
+    end_cpu = time.process_time()
+
     end = time.time()
 
-    return theSum,end-start
+    return theSum,end-start, end_cpu-start_cpu
 
 
 def sumOfN3(n):
@@ -60,6 +64,7 @@ def sumOfN3(n):
 if __name__ == '__main__':
     """Runs if file called as script as opposed to being imported as a library
     """
+    start_time = time.time()
     nTest = 5
     nVals = [10000, 100000, 1000000, 5000000, 10000000]
     v2Results = {'n':[], 'tavg':[]}
@@ -68,8 +73,8 @@ if __name__ == '__main__':
         print(f'Times for {n}')
         tSum = 0.0
         for i in range(nTest):
-            (val, t) = sumOfN2(n)
-            print(f"Sum is {val} required {t:10.7} seconds")
+            (val, t, t_cpu) = sumOfN2(n)
+            print(f"Sum is {val} required {t:10.7} seconds (wall), and {t_cpu:10.7} cpu")
             tSum += t
         tavg = tSum/nTest
         print(f'Avg: {tavg}')
@@ -91,6 +96,19 @@ if __name__ == '__main__':
         v3Results['n'].append(n)
         v3Results['tavg'].append(tavg)
     print(v3Results)
+
+    end_time = time.time()
+    print(f"time.time time = {end_time - start_time}")
+    p = psutil.Process()
+    cpu_times = p.cpu_times()
+    print(f"User CPU time: {cpu_times.user} seconds")
+    print(f"System (Kernel) CPU time: {cpu_times.system} seconds")
+    
+    ## The following should work on Linux and Windows but not MacOS
+    # assigned_cores = p.cpu_affinity()
+    # print(f"Assigned CPU Cores: {assigned_cores}")
+    # print(f"Total Assigned Count: {len(assigned_cores)}")
+
 
     # plot the results
     fig, ax = plt.subplots(figsize=(11,8.5))

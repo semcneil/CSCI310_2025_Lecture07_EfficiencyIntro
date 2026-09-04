@@ -66,7 +66,7 @@ if __name__ == '__main__':
     """
     start_time = time.time()
     nTest = 5
-    nVals = [10000, 100000, 1000000, 5000000, 10000000]
+    nVals = [10000, 100000, 1000000, 5000000, 10000000, 100000000]
     v2Results = {'n':[], 'tavg':[]}
     v3Results = {'n':[], 'tavg':[]}
     for n in nVals:
